@@ -1,3 +1,5 @@
+licenses(["notice"])
+
 TEST_COPTS = [
     "-pedantic",
     "-pedantic-errors",
@@ -30,8 +32,8 @@ cc_library(
     hdrs = ["output_test.h"],
     copts = TEST_COPTS,
     deps = [
-        "//:benchmark",
-        "//:benchmark_internal_headers",
+        label("../:benchmark"),
+        label("../:benchmark_internal_headers"),
     ],
 )
 
@@ -44,11 +46,11 @@ cc_library(
     copts = TEST_COPTS + PER_SRC_COPTS.get(test_src, []),
     deps = [
         ":output_test_helper",
-        "//:benchmark",
-        "//:benchmark_internal_headers",
-        "@com_google_googletest//:gtest",
+        label("../:benchmark"),
+        label("../:benchmark_internal_headers"),
+        "//third_party/cc/gtest:gtest",
     ] + (
-        ["@com_google_googletest//:gtest_main"] if (test_src[-len("gtest.cc"):] == "gtest.cc") else []
+        ["//third_party/cc/gtest:gtest_main"] if (test_src[-len("gtest.cc"):] == "gtest.cc") else []
     ),
   # FIXME: Add support for assembly tests to bazel.
   # See Issue #556
@@ -61,5 +63,5 @@ cc_test(
     size = "small",
     srcs = ["link_main_test.cc"],
     copts = TEST_COPTS,
-    deps = ["//:benchmark_main"],
+    deps = [label("../:benchmark_main")],
 )
